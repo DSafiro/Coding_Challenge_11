@@ -6,10 +6,10 @@ class Book {
         this.isbn = isbn; // Assigns ISBN property
         this.copies = copies; // Assigns copies property
     }; 
-    getDetails () {
+    getDetails() {
         return `Title: ${this.title}, Author: ${this.author}, ISBN: ${this.isbn}, Copies: ${this.copies}`; // Returns book details in string format
     };
-    updateCopies (quantity) {
+    updateCopies(quantity) {
         this.copies += quantity; // Modifies copies when book is borrowed or returned
     }; 
 }; // Declares Book class with attributes
@@ -17,3 +17,26 @@ const book1 = new Book("The Great Gatsby", "F. Scott Fitzgerald", 123456, 5);
 console.log(book1.getDetails()); // Produces expected output of "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 5"
 book1.updateCopies(-1);
 console.log(book1.getDetails()); // Produces expected output of "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 4"
+
+// Task 2: Created Borrower Class
+class Borrower {
+    constructor (name, borrowerId) {
+        this.name = name; // Assigns name property  
+        this.borrowerId = borrowerId; // Assgins borrower ID property
+        this.borrowedBooks = []; // Assigns borrwed books as an array
+    };
+    borrowBook(book) {
+       this.borrowedBooks.push(book); // Adds book title to borrowed books array
+    };
+    returnBook(book) {
+        const index = this.borrowedBooks.indexOf(book); // Indexes borrowed books to find book
+        if (index !== -1) { // If index finds book in borrowed books array -> Removes book from array
+            this.borrowedBooks.splice(index, 1); // Removes book if found
+        };
+    };
+}; // Declares Borrower class with attributes
+const borrower1 = new Borrower("Alice Johnson", 201);
+borrower1.borrowBook("The Great Gatsby"); 
+console.log(borrower1.borrowedBooks); // Produces expected output of ["The Great Gatsby"]
+borrower1.returnBook("The Great Gatsby");
+console.log(borrower1.borrowedBooks); // Produces expected output: []
