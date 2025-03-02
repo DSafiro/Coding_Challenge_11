@@ -53,11 +53,11 @@ class Library {
     listBooks() {
         return this.books.forEach(book => console.log(book.getDetails())); // Returns book details from book class and logs it
     }; 
-    
-    // **** Part of Task 4: Implemented Book Borrowing **** //
     addBorrower(borrower) {
         return this.borrowers.push(borrower); // Adds borrower to borrowers array
     };
+
+    // **** Part of Task 4: Implemented Book Borrowing **** //
     lendBook(borrowerId, isbn) {
         const book = this.books.find(book => book.isbn === isbn); // Finds book through ISBN
         if (book.copies > 0) {
@@ -71,6 +71,18 @@ class Library {
         };
     };
 
+    // ***** Part of Task 5: Implemented Book Returns ***** //
+    returnBook(borrowerId, isbn) {
+        const book = this.books.find(book => book.isbn === isbn); // Finds book through ISBN
+        if (book) {
+            book.updateCopies(1); // Increases book's available copies
+        };
+        const borrower = this.borrowers.find(borrower => borrower.borrowerId === borrowerId); // Finds borrower through borrower ID
+        if (borrower) {
+            borrower.returnBook(book.title); // Removes book title from borrowed books array
+        };
+    };
+
 }; // Creates Library class with attributes
 const library = new Library();
 library.addBook(book1);
@@ -81,3 +93,8 @@ library.addBorrower(borrower1); // Adds borrower1 to borrowers array
 library.lendBook(201, 123456);
 console.log(book1.getDetails()); // Produces expected output of "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 3"
 console.log(borrower1.borrowedBooks); // Produces expected output of ["The Great Gatsby"]
+
+// Task 5: Implemented Book Returns
+library.returnBook(201, 123456);
+console.log(book1.getDetails()); // Produces expected output of "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 4"
+console.log(borrower1.borrowedBooks); // Produces expected output of []
