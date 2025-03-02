@@ -23,7 +23,7 @@ class Borrower {
     constructor (name, borrowerId) {
         this.name = name; // Assigns name property  
         this.borrowerId = borrowerId; // Assgins borrower ID property
-        this.borrowedBooks = []; // Assigns borrwed books as an array
+        this.borrowedBooks = []; // Assigns borrowed books as an array
     };
     borrowBook(book) {
        return this.borrowedBooks.push(book); // Adds book title to borrowed books array
@@ -53,7 +53,31 @@ class Library {
     listBooks() {
         return this.books.forEach(book => console.log(book.getDetails())); // Returns book details from book class and logs it
     }; 
+    
+    // **** Part of Task 4: Implemented Book Borrowing **** //
+    addBorrower(borrower) {
+        return this.borrowers.push(borrower); // Adds borrower to borrowers array
+    };
+    lendBook(borrowerId, isbn) {
+        const book = this.books.find(book => book.isbn === isbn); // Finds book through ISBN
+        if (book.copies > 0) {
+            book.updateCopies(-1); // If book exists and copies are greater than 0 -> Reduces available copies by 1
+        } else {
+            return console.log(`No book copies available.`); // Returns that no copies are available
+        };
+        const borrower = this.borrowers.find(borrower => borrower.borrowerId === borrowerId); // Finds borrower through borrower ID
+        if (borrower) {
+            return borrower.borrowBook(book.title); // Adds book title to borrowed books array
+        };
+    };
+
 }; // Creates Library class with attributes
 const library = new Library();
 library.addBook(book1);
 library.listBooks();// Produces expected output: "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 4"
+
+// Task 4: Implemented Book Borrowing
+library.addBorrower(borrower1); // Adds borrower1 to borrowers array
+library.lendBook(201, 123456);
+console.log(book1.getDetails()); // Produces expected output of "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 3"
+console.log(borrower1.borrowedBooks); // Produces expected output of ["The Great Gatsby"]
